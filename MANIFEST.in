@@ -1,5 +1,7 @@
 include LICENSE
 include README.md
+recursive-include djnotifier *
 recursive-include djnotifier/static *
 recursive-include djnotifier/templates *
 recursive-include docs *
+recursive-include example *
