@@ -1,5 +1,5 @@
 # djnotifier
->**djnotifier** is a Django app to conduct web-based real time notification.
+>**djnotifier** is a Django app to conduct web-based real time notification. Almost fully customizable app + plugin.
 
 
 # Quick start
@@ -90,6 +90,58 @@ Add `djnotifier`'s `template` to a common project template e.g. `base.html or co
 
 
 ## Usage example
+Default config `djnotifier`
+```python
+# You may replace this consumer as needed and 
+# point the consumer class
+DJ_NOTIFIER_CONSUMER = 'djnotifier.consumers.DJNotifierConsumer'
+
+# If you want to register more websocket routes
+# you may point to the routes list variable as - 
+DJ_NOTIFIER_EXTRA_ROUTES = "<app_label>.routing.extra_routes"
+
+# When you're developing you may want to 
+# turn it on by putting `True` to see
+# `djnotifier` logs
+DJ_NOTIFIER_CONFIG_INFO_SHOW = False
+```
+Consumer class `djnotifier.consumers.DJNotifierConsumer`
+```python
+# djnotifier/consumers.py
+import json
+from channels.generic.websocket import AsyncWebsocketConsumer
+
+
+class DJNotifierConsumer(AsyncWebsocketConsumer):
+
+    async def connect(self) -> None:
+        user = self.scope["user"]
+        group = "dj_notifier_anonymous"
+        if not user.is_anonymous:
+            group = f"dj_notifier_{user.pk}"
+
+        self.group_name = group
+
+        await self.channel_layer.group_add(
+            self.group_name,
+            self.channel_name
+        )
+        self.groups.append(self.group_name)
+        await self.accept()
+
+    async def disconnect(self, close_code) -> None:
+        await self.channel_layer.group_discard(self.group_name, self.channel_name)
+        self.groups.remove(self.group_name)
+        await self.close()
+
+    async def receive(self, text_data=None, bytes_data=None) -> None:
+        pass
+
+    async def dj_notifier(self, event):
+        data = event["data"]
+        await self.send(text_data=json.dumps(data))
+```
+
 Copy example project into your Django project's root, install in your `INSTALLED_APPS`
 ```python
 INSTALLED_APPS = [
@@ -129,3 +181,6 @@ Now open 2 tabs -
 
 Now in another tab if you open http://localhost:8000/example/notify/
 then you'll see two different notification.
+
+
+# Customization

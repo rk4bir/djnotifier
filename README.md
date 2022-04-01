@@ -1,5 +1,5 @@
 # djnotifier
->**djnotifier** is a Django app to conduct web-based real time notification.
+>**djnotifier** is a Django app to conduct web-based real time notification. Almost fully customizable app + plugin.
 
 
 # Quick start
@@ -90,7 +90,27 @@ Add `djnotifier`'s `template` to a common project template e.g. `base.html or co
 
 
 ## Usage example
-Copy example project into your Django project's root, install in your `INSTALLED_APPS`
+#### Configure `djnotifier`
+```python
+# <project>/settings.py
+
+...
+
+# You may replace this consumer as needed and 
+# point the consumer class
+DJ_NOTIFIER_CONSUMER = 'djnotifier.consumers.DJNotifierConsumer'
+
+# If you want to register more websocket routes
+# you may point to the routes list variable as - 
+DJ_NOTIFIER_EXTRA_ROUTES = "<app_label>.routing.extra_routes"
+
+# When you're developing you may want to 
+# turn it on by putting `True` to see
+# `djnotifier` logs
+DJ_NOTIFIER_CONFIG_INFO_SHOW = False
+```
+
+####  Copy example project into your Django project's root, install in your `INSTALLED_APPS`
 ```python
 INSTALLED_APPS = [
      ...
@@ -98,7 +118,7 @@ INSTALLED_APPS = [
      'example',
  ]
  ```
-Add example routes to `project`'s url 
+#### Add example routes to `project`'s url 
 ```python
 # <project>/urls.py
 ...
@@ -112,7 +132,7 @@ urlpatterns = [
 ]
 ```
 
-Now run redis-server and django development server -
+#### Now run redis-server and django development server -
 ```shell
 # run redis-server
 $  redis-server
@@ -123,7 +143,7 @@ in another terminal/console tab run -
 $ python manage.py runserver
 ```
 
-Now open 2 tabs - 
+#### Now open 2 tabs - 
 1. Un-authenticated user page: http://localhost:8000/example/
 2. Authenticated user page: http://localhost:8000/example/auth/
 
