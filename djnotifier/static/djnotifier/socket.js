@@ -5,11 +5,7 @@ var socket = new ReconnectingWebSocket(webSocketEndpoint);
 
 socket.onmessage = function(e){
   let data = JSON.parse(e.data);
-  if ( data['type'] ) {
-    DJNotifier(style='info', text=data.message, audio=true)
-  } else {
-    DJNotifier(style=data['type'], text=data.message, audio=true)
-  }
+  DJNotifier(style=data.type || 'info', text=data.message, audio=true)
 }
 
 // Socket Connet Functionality
