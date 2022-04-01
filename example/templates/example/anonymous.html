@@ -1,0 +1,13 @@
+{% extends 'example/base.html' %}
+{% block title %}Un-authenticated user notification{% endblock %}
+
+{% block content %}
+<h2>
+  <code>
+    Hello, guest!
+  </code>
+  <div class="my-4" style="text-align: center; font-size: 1.2rem">
+    <a class="text-info" target="_blank" href="{% url 'example:notify' %}">Trigger notification =></a>
+  </div>
+</h2>
+{% endblock content %}

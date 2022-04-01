@@ -1,0 +1,13 @@
+{% extends 'example/base.html' %}
+{% block title %}Authenticated user notification{% endblock %}
+{% block content %}
+<h1></h1>
+<h2>
+  <code>
+    Hello, {{ request.user|safe }}!
+  </code>
+</h2>
+<div class="my-4" style="text-align: center; font-size: 1.2rem">
+  <a class="text-info" target="_blank" href="{% url 'example:notify' %}?next={{ request.path }}">Trigger notification =></a>
+</div>
+{% endblock content %}
