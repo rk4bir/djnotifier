@@ -2,7 +2,14 @@
 > The `djnotifier` app is almost 100% customizable
 
 
-## Customize notification frontend
+# Table of contents
+1. [Frontend notification customization](#customize-notification-frontend)
+    - [Adding own notification class/style](#adding-own-notification-classstyle)
+    - [Registering new style as default](#registering-new-style-as-default)
+2. [Frontend websocket customization](#frontend-websocket-customization)
+3. [Backend customization](#backend-customization)
+
+## Frontend notification customization
 > Customize the notification style and other functionalities
 
 ### Adding own notification class/style
@@ -59,12 +66,15 @@ $.notify.addStyle("metro", {
 {% include 'djnotifier/dj_notifier.html' %}
 ```
 
-**Adding new style as one of notification styles
+**Adding new style as one of notification styles**
 ```html
 <!--dj_notifier: add custom style-->
-{% block dj_notifier_notification_custom_style_js %}
-  <script src="{% static 'path/to/djnotifier-custom-style.js' %}"></script>
-{% endblock dj_notifier_notification_custom_style_js %}
+{% block dj_notifier_notification_custom_style %}
+    <script src="{% static 'path/to/djnotifier-custom-style.js' %}"></script>
+
+    <!--optional-->
+    <link href="{% static 'path/to/djnotifier-custom-style.css' %}" rel="stylesheet">
+{% endblock dj_notifier_notification_custom_style %}
 ```
 
 ### Registering new style as default
@@ -125,5 +135,47 @@ function playNotifyAudio(){
     <audio id="djNotifyAudio" data-src="{% static 'path/to/notify.mp3' %}"></audio>
 {% endblock dj_notifier_notification_audio %}
 ```
-## Notification (backend) 
+
+## Frontend websocket customization
+> Customize the websocket frontend
+
+**Writing own websocket client**
+```javascript
+// socket.js example
+var protocol = (window.location.protocol == 'http:') ? 'ws://' : 'wss://';
+var endpoint = "djnotifier"
+var webSocketEndpoint =  protocol + window.location.host + '/' + endpoint + '/';
+var socket = new ReconnectingWebSocket(webSocketEndpoint);
+
+socket.onmessage = function(e){
+  let data = JSON.parse(e.data);
+  // triggering push notification here...
+  DJNotifier(style=data.type || 'info', text=data.message, audio=true)
+}
+
+// Socket Connet Functionality
+socket.onopen = function(e){
+    // more logic here...
+}
+
+// Socket Error Functionality
+socket.onerror = function(e){
+  // more logic here...
+}
+
+// Socket close Functionality
+socket.onclose = function(e){
+  console.log('Disconnected from djnotifier')
+}
+```
+
+**Replacing default frontend websocket client**
+```html
+<!--web socket javascript client-->
+{% block dj_notifier_websocket_js %}
+    <script src="{% static 'path/to/custom-socket.js' %}"></script>
+{% endblock dj_notifier_websocket_js %}
+```
+
+## Backend customization
 > Customize the notification consumer, add more websocket routes etc.

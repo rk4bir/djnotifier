@@ -5,26 +5,23 @@
 <script src="{% static 'djnotifier/notify/jquery.min.js' %}"></script>
 <script src="{% static 'djnotifier/notify/notify.js' %}"></script>
 
+<!--dj_notifier: add custom style-->
+{% block dj_notifier_notification_custom_style %}{% endblock dj_notifier_notification_custom_style %}
+
 
 <!--dj_notifier: notification javascript-->
 {% block dj_notifier_notification_js %}
-<script src="{% static 'djnotifier/notification.js' %}"></script>
+    <script src="{% static 'djnotifier/notification.js' %}"></script>
 {% endblock dj_notifier_notification_js %}
-
-<!--dj_notifier -> override: notification javascript-->
-{% block dj_notifier_notification_js_override %}{% endblock dj_notifier_notification_js_override %}
 
 
 <!--dj_notifier: web socket javascript-->
 {% block dj_notifier_websocket_js %}
-<script src="{% static 'djnotifier/socket.js' %}"></script>
+    <script src="{% static 'djnotifier/socket.js' %}"></script>
 {% endblock dj_notifier_websocket_js %}
-
-<!--dj_notifier -> override: web socket javascript-->
-{% block dj_notifier_websocket_js_override %}{% endblock dj_notifier_websocket_js_override %}
 
 
 <!--dj_notifier: notification audio file-->
 {% block dj_notifier_notification_audio %}
-<audio id="djNotifyAudio" data-src="{% static 'djnotifier/notify.mp3' %}"></audio>
+    <audio id="djNotifyAudio" data-src="{% static 'djnotifier/notify.mp3' %}"></audio>
 {% endblock dj_notifier_notification_audio %}
