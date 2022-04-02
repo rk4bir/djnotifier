@@ -1,7 +1,8 @@
 # Customization
 > The `djnotifier` app is almost 100% customizable
 
-## Customize notification
+
+## Customize notification frontend
 > Customize the notification style and other functionalities
 
 ### Adding own notification class/style
@@ -115,6 +116,14 @@ function playNotifyAudio(){
 {% block dj_notifier_notification_js %}
   <script src="{% static 'path/to/custom-notification.js' %}"></script>
 {% endblock dj_notifier_notification_js %}
+```
+
+**Change default notification audio-**
+```html
+<!--dj_notifier: notification audio file-->
+{% block dj_notifier_notification_audio %}
+    <audio id="djNotifyAudio" data-src="{% static 'path/to/notify.mp3' %}"></audio>
+{% endblock dj_notifier_notification_audio %}
 ```
 ## Notification (backend) 
 > Customize the notification consumer, add more websocket routes etc.
